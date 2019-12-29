@@ -30,7 +30,7 @@ Rscript $repoPath/addTaxonomyToOtuTable.R -i $path/exported/feature-table.forR.t
 
 biom convert -i $path/exported/feature-table.withTax.tsv -o $output --to-hdf5 --table-type="OTU table" --process-obs-metadata taxonomy
 
-rm -rf $path/exported
+# rm -rf $path/exported
 
 
 
