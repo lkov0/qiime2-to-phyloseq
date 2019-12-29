@@ -9,3 +9,4 @@ takes five positional arguments:
 3. path to newick tree file in qza format
 4. output file name (no path)
 5. path to output directory
+6. path to qiime2-to-phyloseq repo
