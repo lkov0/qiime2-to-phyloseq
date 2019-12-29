@@ -7,24 +7,26 @@
 # 3. path to newick tree file in qza format
 # 4. output file name (no path)
 # 5. path to output directory
+# 6. path to qiime2-to-phyloseq repository 
 
 otuTable=$1
 treeFile=$2
 taxonomy=$3
 output=$4
 path=$5
+repoPath=$6
 
 qiime tools export --input-path $otuTable --output-path $path/exported
 qiime tools export --input-path $taxonomy --output-path $path/exported
 qiime tools export --input-path $treeFile --output-path $path/tree
-biomTax=$path/biom-taxonomy.tsv
+biomTax=$path/exported/biom-taxonomy.tsv
 echo "#OTUID    taxonomy    confidence" > $biomTax
 sed '1d' $path/exported/taxonomy.tsv >> $biomTax
 
 biom convert -i $path/exported/feature-table.biom -o $path/exported/feature-table.tsv --to-tsv
 sed "s/#//g" $path/exported/feature-table.tsv > $path/exported/feature-table.forR.tsv
 
-Rscript addTaxonomyToOtuTable.R -i $path/exported/feature-table.forR.tsv -t $path/exported/taxonomy.tsv -o $path/exported/feature-table.withTax.tsv
+Rscript $repoPath/addTaxonomyToOtuTable.R -i $path/exported/feature-table.forR.tsv -t $path/exported/taxonomy.tsv -o $path/exported/feature-table.withTax.tsv
 
 biom convert -i $path/exported/feature-table.withTax.tsv -o $output --to-hdf5 --table-type="OTU table" --process-obs-metadata taxonomy
 
