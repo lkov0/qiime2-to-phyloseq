@@ -10,7 +10,7 @@ parser$add_argument("-o", "--output", help="output tsv formatted OTU table name"
 args=parser$parse_args()
 
 otus <- read.table(args$otuTable, header=T, sep="\t", row.names=1, skip=1)
-taxonomy <- read.table(args$taxonomy, header=T, sep="\t")
+taxonomy <- read.table(args$taxonomy, header=T, sep="\t", comment.char="")
 
 otus.merged <- merge(otus, taxonomy[,c(1,2)], by.x="row.names", by.y="Feature.ID")
 names(otus.merged)[ncol(otus.merged)] <- "taxonomy"
